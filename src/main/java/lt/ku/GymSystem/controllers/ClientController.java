@@ -1,7 +1,9 @@
 package lt.ku.GymSystem.controllers;
 
 import lt.ku.GymSystem.entities.Client;
+import lt.ku.GymSystem.entities.Workout;
 import lt.ku.GymSystem.repositories.ClientRepository;
+import lt.ku.GymSystem.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,10 @@ import java.util.List;
 public class ClientController {
     @Autowired
     public ClientRepository clientRepository;
+
+    @Autowired
+    public WorkoutRepository workoutRepository;
+
 
     @GetMapping("/")
     public String clients(Model model){

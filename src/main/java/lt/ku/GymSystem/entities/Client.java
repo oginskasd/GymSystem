@@ -21,7 +21,6 @@ public class Client {
     @Column
     private String phone;
 
-
     public Client() {
     }
 
