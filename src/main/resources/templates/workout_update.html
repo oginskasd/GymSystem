@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="components/header"></div>
+<body>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Trenruotės</div>
+                <div class="card-body">
+                  <form method="post" th:action="'/workouts/update/'+${workout.id}">
+                      <div class="mb-3">
+                          <label class="form-label">Pavadinimas</label>
+                          <input type="text" class="form-control" name="name" th:value="${workout.name}">
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Data</label>
+                          <input type="text" class="form-control" name="date" th:value="${workout.date}">
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Vietos</label>
+                          <input type="number" class="form-control" name="places" th:value="${workout.places}">
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Lokacija</label>
+                          <input type="text" class="form-control" name="location" th:value="${workout.location}">
+                      </div>
+                      <button class="btn btn-success">Išsaugoti</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="components/footer"></div>
+</body>
+</html>

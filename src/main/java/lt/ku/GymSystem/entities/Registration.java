@@ -2,8 +2,6 @@ package lt.ku.GymSystem.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name="registrations")
 public class Registration {
@@ -11,11 +9,33 @@ public class Registration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "workout")
-    private List<Client> clients;
+    @OneToOne
+    private Client client;
 
+    @OneToOne
+    private Workout workout;
+
+    @Column
+    private String registration_date;
+
+    public Object getAttribute(String name) {
+        System.out.println(name);
+        return switch (name.toLowerCase()) {
+            case "id" -> getId();
+            case "registration_date" -> getRegistration_date();
+            case "client" -> getClient().toString();
+            case "workout" -> getWorkout().toString();
+            default -> "";
+        };
+    }
 
     public Registration() {
+    }
+
+    public Registration(Client client, Workout workout, String registration_date) {
+        this.client = client;
+        this.workout = workout;
+        this.registration_date = registration_date;
     }
 
     public Integer getId() {
@@ -26,18 +46,27 @@ public class Registration {
         this.id = id;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public String getRegistration_date() {
+        return registration_date;
     }
 
-    public void setClients(List<Client> students) {
-        this.clients = students;
+    public void setRegistration_date(String registration_date) {
+        this.registration_date = registration_date;
     }
 
-    @Override
-    public String toString() {
-        return "Registration{" +
-                "id=" + id +
-                '}';
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Workout getWorkout() {
+        return workout;
+    }
+
+    public void setWorkout(Workout workout) {
+        this.workout = workout;
     }
 }

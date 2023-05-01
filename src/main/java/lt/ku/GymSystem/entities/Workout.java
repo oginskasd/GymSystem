@@ -2,8 +2,6 @@ package lt.ku.GymSystem.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 @Table(name="workouts")
 public class Workout {
@@ -11,22 +9,38 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 64)
+    @Column
     private String name;
 
-    @Column()
-    private Date date;
+    @Column
+    private String date;
 
-    @Column()
+    @Column
     private Integer places;
 
-    @Column(length = 256)
+    @Column
     private String location;
+
+    public Object getAttribute(String name) {
+        return switch (name.toLowerCase()) {
+            case "id" -> getId();
+            case "name" -> getName();
+            case "date" -> getDate();
+            case "places" -> getPlaces();
+            case "location" -> getLocation();
+            default -> "";
+        };
+    }
+
+    @Override
+    public String toString() {
+        return name + ", " + date;
+    }
 
     public Workout() {
     }
 
-    public Workout(String name, Date date, Integer places, String location) {
+    public Workout(String name, String date, Integer places, String location) {
         this.name = name;
         this.date = date;
         this.places = places;
@@ -49,11 +63,11 @@ public class Workout {
         this.name = name;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -71,16 +85,5 @@ public class Workout {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    @Override
-    public String toString() {
-        return "Workout{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", date='" + date + '\'' +
-                ", places='" + places + '\'' +
-                ", location='" + location + '\'' +
-                '}';
     }
 }

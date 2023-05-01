@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="components/header"></div>
+<body>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <a href="/registrations/create" class="btn btn-primary mb-3">Pridėti naują registraciją</a>
+            <div class="card">
+                <div class="card-header">Registracijos</div>
+                <div class="card-body">
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Klientas</th>
+                            <th>Treniruotė</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="registration: ${registrations}">
+                            <td th:text="${registration.registration_date}"></td>
+                            <td th:text="${registration.getClient().getName()}+' '+${registration.getClient().getSurname()}"></td>
+                            <td th:text="${registration.getWorkout().getName()}"></td>
+                            <td style="width: 200px;">
+                                <a th:href="'/registrations/delete/'+${registration.id}" class="btn btn-danger">Ištrinti</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="components/footer"></div>
+</body>
+</html>

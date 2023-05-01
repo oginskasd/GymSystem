@@ -21,6 +21,23 @@ public class Client {
     @Column
     private String phone;
 
+    public Object getAttribute(String name) {
+
+        return switch (name.toLowerCase()) {
+            case "id" -> getId();
+            case "name" -> getName();
+            case "surname" -> getSurname();
+            case "email" -> getEmail();
+            case "phone" -> getPhone();
+            default -> "";
+        };
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + surname;
+    }
+
     public Client() {
     }
 
@@ -69,16 +86,5 @@ public class Client {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    @Override
-    public String toString() {
-        return "Surname{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname=" + surname +
-                ", email=" + email +
-                ", phone=" + phone +
-                '}';
     }
 }

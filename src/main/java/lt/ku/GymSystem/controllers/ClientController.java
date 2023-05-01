@@ -1,13 +1,14 @@
 package lt.ku.GymSystem.controllers;
 
 import lt.ku.GymSystem.entities.Client;
-import lt.ku.GymSystem.entities.Workout;
-import lt.ku.GymSystem.repositories.ClientRepository;
-import lt.ku.GymSystem.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import lt.ku.GymSystem.repositories.ClientRepository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,68 +17,75 @@ public class ClientController {
     @Autowired
     public ClientRepository clientRepository;
 
-    @Autowired
-    public WorkoutRepository workoutRepository;
+    @GetMapping("/clients/")
+    public String clients(Model model) {
+        List<Client> clients = clientRepository.getClients();
 
-
-    @GetMapping("/")
-    public String clients(Model model){
-        List<Client> clients = clientRepository.findAll();
         model.addAttribute("clients", clients);
+
         return "client_list";
     }
 
-    @GetMapping("/new")
-    public String newClient(){
+    @GetMapping("/clients/create")
+    public String create(Model model) {
+
         return "client_new";
     }
 
-    @PostMapping("/new")
-    public String storeClient(
+    @PostMapping("/clients/create")
+    public String store(
             @RequestParam("name") String name,
             @RequestParam("surname") String surname,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone
-    ){
-        Client g=new Client(name, surname, email, phone);
-        clientRepository.save(g);
-        return "redirect:/";
+    ) {
+        Client client = new Client(name, surname, email, phone);
+
+        clientRepository.save(client);
+
+        return "redirect:/clients/";
     }
 
-    @GetMapping("/update/{id}")
-    public String update(
-        @PathVariable("id") Integer id,
-        Model model
-    ){
-        Client g= clientRepository.getReferenceById(id);
-        model.addAttribute("client", g);
+    @GetMapping("/clients/update/{id}")
+    public String edit(
+            @PathVariable("id") Integer id,
+            Model model
+    ) {
+        Client client = clientRepository.getReferenceById(id);
+
+        model.addAttribute("client", client);
+
         return "client_update";
     }
 
-    @PostMapping("/update/{id}")
-    public String save(
+    @PostMapping("/clients/update/{id}")
+    public String edit(
             @PathVariable("id") Integer id,
             @RequestParam("name") String name,
             @RequestParam("surname") String surname,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone
-    ){
-        Client g= clientRepository.getReferenceById(id);
-        g.setName(name);
-        g.setSurname(surname);
-        g.setEmail(email);
-        g.setPhone(phone);
-        clientRepository.save(g);
+    ) {
+        Client client = clientRepository.getReferenceById(id);
 
-        return "redirect:/";
+        client.setName(name);
+        client.setSurname(surname);
+        client.setEmail(email);
+        client.setPhone(phone);
+
+        clientRepository.save(client);
+
+        return "redirect:/clients/";
     }
 
-    @GetMapping("/delete/{id}")
-    public  String delete(
+    @GetMapping("/clients/delete/{id}")
+    public String delete(
             @PathVariable("id") Integer id
-    ){
-        clientRepository.deleteById(id);
-        return "redirect:/";
-    }
+    ) {
+        clientRepository.delete(
+                clientRepository.getReferenceById(id)
+        );
 
+        return "redirect:/clients/";
+    }
 }

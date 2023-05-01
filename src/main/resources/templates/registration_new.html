@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="components/header"></div>
+<body>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Kliento registracija</div>
+                <div class="card-body">
+                    <form method="post" action="/registrations/create">
+                        <div class="mb-3">
+                            <label class="form-label">Klientas</label>
+                            <select class="form-control" name="client">
+                                <option th:each="client : ${clients}" th:value="${client.id}" th:text="${client.name}+' '+${client.surname}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Treniruotė</label>
+                            <select class="form-control" name="workout">
+                                <option th:each="workout : ${workouts}" th:value="${workout.id}" th:text="${workout.name}">
+                                </option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success">Pridėti</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="components/footer"></div>
+</body>
+</html>
