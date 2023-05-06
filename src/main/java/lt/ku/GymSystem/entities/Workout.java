@@ -1,6 +1,11 @@
 package lt.ku.GymSystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="workouts")
@@ -9,15 +14,23 @@ public class Workout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotEmpty(message = "Pavadinimas yra privalomas laukelis.")
+    @Length(min = 3, max = 20, message = "Pavadinimas turi būti nuo 3 iki 20 simbolių.")
     @Column
     private String name;
 
+    @NotEmpty(message = "Data yra privaloma laukelis.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(pattern = "yyyy/MM/dd")
     @Column
     private String date;
 
+    @NotNull(message = "Vietos yra privaloma laukelis.")
     @Column
     private Integer places;
 
+    @NotEmpty(message = "Vieta yra privalomas laukelis.")
+    @Length(min = 3, max = 20, message = "Vieta turi būti nuo 3 iki 20 simbolių.")
     @Column
     private String location;
 
@@ -38,13 +51,6 @@ public class Workout {
     }
 
     public Workout() {
-    }
-
-    public Workout(String name, String date, Integer places, String location) {
-        this.name = name;
-        this.date = date;
-        this.places = places;
-        this.location = location;
     }
 
     public Integer getId() {

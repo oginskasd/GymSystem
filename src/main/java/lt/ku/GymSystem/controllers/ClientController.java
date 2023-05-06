@@ -9,6 +9,9 @@ import lt.ku.GymSystem.repositories.ClientRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,18 +31,22 @@ public class ClientController {
 
     @GetMapping("/clients/create")
     public String create(Model model) {
+        model.addAttribute("client", new Client());
 
         return "client_new";
     }
 
     @PostMapping("/clients/create")
     public String store(
-            @RequestParam("name") String name,
-            @RequestParam("surname") String surname,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone
+            Model model,
+            @Valid
+            @ModelAttribute Client client,
+            BindingResult result
     ) {
-        Client client = new Client(name, surname, email, phone);
+
+        if(result.hasErrors()) {
+            return "client_new";
+        }
 
         clientRepository.save(client);
 

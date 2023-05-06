@@ -1,14 +1,13 @@
 package lt.ku.GymSystem.controllers;
 
+import jakarta.validation.Valid;
 import lt.ku.GymSystem.entities.Workout;
 import lt.ku.GymSystem.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,19 +26,22 @@ public class WorkoutController {
     }
 
     @GetMapping("/workouts/create")
-    public String create() {
+    public String create(Model model) {
+        model.addAttribute("workout", new Workout());
 
         return "workout_new";
     }
 
     @PostMapping("/workouts/create")
     public String store(
-            @RequestParam("name") String name,
-            @RequestParam("date") String date,
-            @RequestParam("places") Integer places,
-            @RequestParam("location") String location
+            @Valid
+            @ModelAttribute Workout workout,
+            BindingResult result
     ) {
-        Workout workout = new Workout(name, date, places, location);
+
+        if(result.hasErrors()) {
+            return "workout_new";
+        }
 
         workoutRepository.save(workout);
 
