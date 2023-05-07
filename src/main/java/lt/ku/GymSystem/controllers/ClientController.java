@@ -1,7 +1,11 @@
 package lt.ku.GymSystem.controllers;
 
 import lt.ku.GymSystem.entities.Client;
+import lt.ku.GymSystem.services.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,6 +25,9 @@ import java.util.List;
 public class ClientController {
     @Autowired
     public ClientRepository clientRepository;
+
+    @Autowired
+    public FileStorageService fileStorageService;
 
     @GetMapping("/clients/")
     public String clients(Model model) {
@@ -40,6 +48,7 @@ public class ClientController {
     @PostMapping("/clients/create")
     public String store(
             Model model,
+            @RequestParam("file") MultipartFile document,
             @Valid
             @ModelAttribute Client client,
             BindingResult result
@@ -49,12 +58,33 @@ public class ClientController {
             return "client_new";
         }
 
+        if(!document.isEmpty()) {
+            client.setDocument(document.getOriginalFilename());
+        }
+
         client.setPassword(new BCryptPasswordEncoder().encode(client.getPassword()));
 
         clientRepository.save(client);
 
+        if(!document.isEmpty()) {
+            fileStorageService.store(document, client.getId().toString());
+        }
+
         return "redirect:/clients/";
     }
+
+    @GetMapping("/clients/{id}/document")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable Integer id) {
+        Client client = clientRepository.getReferenceById(id);
+        Resource file = fileStorageService.load(client.getId().toString());
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ client.getDocument() +"\"")
+                .body(file);
+    }
+
 
     @GetMapping("/clients/update/{id}")
     public String edit(
@@ -74,7 +104,8 @@ public class ClientController {
             @RequestParam("name") String name,
             @RequestParam("surname") String surname,
             @RequestParam("email") String email,
-            @RequestParam("phone") String phone
+            @RequestParam("phone") String phone,
+            @RequestParam("file") MultipartFile document
     ) {
         Client client = clientRepository.getReferenceById(id);
 
@@ -82,6 +113,11 @@ public class ClientController {
         client.setSurname(surname);
         client.setEmail(email);
         client.setPhone(phone);
+
+        if(!document.isEmpty()) {
+            client.setDocument(document.getOriginalFilename());
+            fileStorageService.store(document, client.getId().toString());
+        }
 
         clientRepository.save(client);
 

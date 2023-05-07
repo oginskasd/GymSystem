@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-header">Klientai</div>
                 <div class="card-body">
-                  <form method="post" action="/clients/create" th:object="${client}">
+                  <form method="post" enctype="multipart/form-data" action="/clients/create" th:object="${client}">
                       <div class="mb-3">
                           <label class="form-label">Prisijungimo vardas</label>
                           <input type="text" class="form-control" th:name="username" th:value="*{username}">
@@ -50,6 +50,10 @@
                           <ul th:if="${#fields.hasErrors('phone')}" class="mt-1 ps-3">
                               <li th:each="error: ${#fields.errors('phone')}" th:text="${error}" class="text-danger"/>
                           </ul>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Sutarties failas: </label>
+                          <input type="file" class="form-control" name="file">
                       </div>
                       <button class="btn btn-success">Pridėti</button>
                   </form>

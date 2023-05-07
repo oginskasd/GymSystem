@@ -50,6 +50,17 @@ public class Client implements UserDetails {
     @Column
     private String phone;
 
+    @Column(nullable = true)
+    private String document = null;
+
+    public String getDocument() {
+        return document;
+    }
+
+    public void setDocument(String document) {
+        this.document = document;
+    }
+
     public Object getAttribute(String name) {
 
         return switch (name.toLowerCase()) {

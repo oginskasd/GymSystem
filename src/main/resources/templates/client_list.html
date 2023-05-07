@@ -29,6 +29,7 @@
                                 <td class="text-nowrap" style="width: 200px;">
                                     <a th:href="'/clients/update/'+${client.id}" class="btn btn-success">Redaguoti</a>
                                     <a th:href="'/clients/delete/'+${client.id}" class="btn btn-danger">Ištrinti</a>
+                                    <a th:if="${client.document!=null}" th:href="${'/clients/'+client.id+'/document'}" class="btn btn-primary" >Sutartis</a>
                                 </td>
                             </tr>
                         </tbody>

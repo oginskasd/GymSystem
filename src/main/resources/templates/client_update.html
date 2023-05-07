@@ -8,22 +8,45 @@
             <div class="card">
                 <div class="card-header">Klientai</div>
                 <div class="card-body">
-                  <form method="post" th:action="'/clients/update/'+${client.id}">
+                  <form method="post" enctype="multipart/form-data" th:action="'/clients/update/'+${client.id}" th:object="${client}">
+                      <div class="mb-3">
+                          <label class="form-label">Prisijungimo vardas</label>
+                          <input type="text" class="form-control" th:name="username" th:value="*{username}">
+                          <ul th:if="${#fields.hasErrors('username')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('username')}" th:text="${error}" class="text-danger"/>
+                          </ul>
+                      </div>
                       <div class="mb-3">
                           <label class="form-label">Vardas</label>
-                          <input type="text" class="form-control" name="name" th:value="${client.name}">
+                          <input type="text" class="form-control" th:name="name" th:value="*{name}">
+                          <ul th:if="${#fields.hasErrors('name')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('name')}" th:text="${error}" class="text-danger"/>
+                          </ul>
                       </div>
                       <div class="mb-3">
                           <label class="form-label">Pavardė</label>
-                          <input type="text" class="form-control" name="surname" th:value="${client.surname}">
+                          <input type="text" class="form-control" th:name="surname" th:value="*{surname}">
+                          <ul th:if="${#fields.hasErrors('surname')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('surname')}" th:text="${error}" class="text-danger"/>
+                          </ul>
                       </div>
                       <div class="mb-3">
                           <label class="form-label">El. paštas</label>
-                          <input type="text" class="form-control" name="email" th:value="${client.email}">
+                          <input type="text" class="form-control" th:name="email" th:value="*{email}">
+                          <ul th:if="${#fields.hasErrors('email')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('email')}" th:text="${error}" class="text-danger"/>
+                          </ul>
                       </div>
                       <div class="mb-3">
                           <label class="form-label">Tel. Numeris</label>
-                          <input type="text" class="form-control" name="phone" th:value="${client.phone}">
+                          <input type="text" class="form-control" th:name="phone" th:value="*{phone}">
+                          <ul th:if="${#fields.hasErrors('phone')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('phone')}" th:text="${error}" class="text-danger"/>
+                          </ul>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Sutarties failas: </label>
+                          <input type="file" class="form-control" name="file">
                       </div>
                       <button class="btn btn-success">Išsaugoti</button>
                   </form>
