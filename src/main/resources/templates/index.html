@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<div th:replace="components/header"></div>
+<div th:replace="~{components/header}"></div>
 <body>
   <!-- main -->
   <div class="container">
     <div class="my-5">
-      Index
+      <div class="alert alert-info mt-3 mb-3" sec:authorize="isAuthenticated()">
+        Sveikas prisijungęs: <span sec:authentication="name"></span>
+      </div>
     </div>
   </div>
-  <div th:replace="components/footer"></div>
+  <div th:replace="~{components/footer}"></div>
 </body>
 </html>

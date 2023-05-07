@@ -9,6 +9,7 @@ import lt.ku.GymSystem.repositories.ClientRepository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,8 @@ public class ClientController {
         if(result.hasErrors()) {
             return "client_new";
         }
+
+        client.setPassword(new BCryptPasswordEncoder().encode(client.getPassword()));
 
         clientRepository.save(client);
 

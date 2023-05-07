@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="components/header"></div>
+<div th:replace="~{components/header}"></div>
 <body>
 <div class="container">
     <div class="row mt-5">
@@ -9,6 +9,20 @@
                 <div class="card-header">Klientai</div>
                 <div class="card-body">
                   <form method="post" action="/clients/create" th:object="${client}">
+                      <div class="mb-3">
+                          <label class="form-label">Prisijungimo vardas</label>
+                          <input type="text" class="form-control" th:name="username" th:value="*{username}">
+                          <ul th:if="${#fields.hasErrors('username')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('username')}" th:text="${error}" class="text-danger"/>
+                          </ul>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Slaptažodis</label>
+                          <input type="text" class="form-control" th:name="password" th:value="*{password}">
+                          <ul th:if="${#fields.hasErrors('password')}" class="mt-1 ps-3">
+                              <li th:each="error: ${#fields.errors('password')}" th:text="${error}" class="text-danger"/>
+                          </ul>
+                      </div>
                       <div class="mb-3">
                           <label class="form-label">Vardas</label>
                           <input type="text" class="form-control" th:name="name" th:value="*{name}">
@@ -44,6 +58,6 @@
         </div>
     </div>
 </div>
-<div th:replace="components/footer"></div>
+<div th:replace="~{components/footer}"></div>
 </body>
 </html>

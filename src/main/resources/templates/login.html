@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{components/header}"></div>
+<body>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div th:if="${param.error}" class="alert alert-danger">
+                Neteisingas vartotojo vardas ir slaptažodis.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-info">
+                Buvote sėkmingai atjungtas.
+            </div>
+            <div class="card">
+                <div class="card-header">Prisijungimas</div>
+                <div class="card-body">
+                  <form method="post" action="/login">
+                      <div class="mb-3">
+                          <label class="form-label">Prisijungimo vardas</label>
+                          <input type="text" class="form-control" name="username">
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Slaptažodis</label>
+                          <input type="password" class="form-control" name="password">
+                      </div>
+                      <button class="btn btn-primary">Prisijungti</button>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{components/footer}"></div>
+</body>
+</html>
